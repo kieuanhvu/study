@@ -1,0 +1,5 @@
+package masterSpringMvc.controller;
+
+public class HelloController {
+
+}

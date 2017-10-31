@@ -1,0 +1,11 @@
+package masterSpringMvc.controller;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.social.twitter.api.Twitter;
+import org.springframework.stereotype.Controller;
+
+@Controller
+public class HelloController {
+	@Autowired
+	private Twitter twitter;
+}
