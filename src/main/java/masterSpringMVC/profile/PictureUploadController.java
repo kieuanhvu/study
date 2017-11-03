@@ -26,7 +26,6 @@ import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
-import org.springframework.web.util.WebUtils;
 
 import masterSpringMVC.config.PicturesUploadProperties;
 
@@ -37,12 +36,14 @@ public class PictureUploadController {
 	private final Resource picturesDir;
 	private final Resource anonymousPicture;
 	private final MessageSource messageSource;
+	private final UserProfileSession userProfileSession;
 
 	@Autowired
-	public PictureUploadController(PicturesUploadProperties uploadProperties, MessageSource messageSource) {
+	public PictureUploadController(PicturesUploadProperties uploadProperties, MessageSource messageSource, UserProfileSession userProfileSession) {
 		picturesDir = uploadProperties.getUploadPath();
 		anonymousPicture = uploadProperties.getAnonymousPicture();
 		this.messageSource = messageSource;
+		this.userProfileSession = userProfileSession;
 	}
 
 	@RequestMapping("/upload")
@@ -50,15 +51,15 @@ public class PictureUploadController {
 		return "profile/uploadPage";
 	}
 
-	@RequestMapping(value = "/upload", method = RequestMethod.POST)
+	@RequestMapping(value = "/profile", params = {"upload"}, method = RequestMethod.POST)
 	public String onUpload(MultipartFile file, RedirectAttributes redirectAttrs, Model model) throws IOException {
 		if (file.isEmpty() || !isImage(file)) {
 			redirectAttrs.addFlashAttribute("error", "Incorrect file. Please upload a picture.");
-			return "redirect:/upload";
+			return "redirect:/profile";
 		}
 		Resource picturePath = copyFileToPictures(file);
-		model.addAttribute("picturePath", picturePath);
-		return "profile/uploadPage";
+		userProfileSession.setPicturePath(picturePath);
+		return "redirect:/profile";
 	}
 
 	private Resource copyFileToPictures(MultipartFile file) throws IOException {
@@ -87,6 +88,7 @@ public class PictureUploadController {
 	public ModelAndView onUploadError(HttpServletRequest request, Locale locale) {
 		ModelAndView modelAndView = new ModelAndView("profile/uploadPage");
 		modelAndView.addObject("error", messageSource.getMessage("upload.file.too.big", null, locale));
+		modelAndView.addObject("profileForm", userProfileSession.toForm());
 		return modelAndView;
 	}
 
@@ -99,6 +101,7 @@ public class PictureUploadController {
 	public ModelAndView handleIOException(Locale locale) {
 		ModelAndView modelAndView = new ModelAndView("profile/uploadPage");
 		modelAndView.addObject("error", messageSource.getMessage("upload.io.exception", null, locale));
+		modelAndView.addObject("profileForm", userProfileSession.toForm());
 		return modelAndView;
 	}
 

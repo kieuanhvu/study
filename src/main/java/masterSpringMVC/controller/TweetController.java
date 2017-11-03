@@ -20,10 +20,10 @@ public class TweetController {
 	@Autowired
 	private Twitter twitter;
 
-	@RequestMapping("/")
+	/*@RequestMapping("/")
 	public String home() {
 		return "searchPage";
-	}
+	}*/
 
 	@RequestMapping("/result")
 	public String hello(@RequestParam(defaultValue = "masterSpringMVC4") String search, Model model) {
