@@ -85,7 +85,7 @@ public class PictureUploadController {
 	
 	@RequestMapping("uploadError")
 	public ModelAndView onUploadError(HttpServletRequest request, Locale locale) {
-		ModelAndView modelAndView = new ModelAndView("uploadPage");
+		ModelAndView modelAndView = new ModelAndView("profile/uploadPage");
 		modelAndView.addObject("error", messageSource.getMessage("upload.file.too.big", null, locale));
 		return modelAndView;
 	}
