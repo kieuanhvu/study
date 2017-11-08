@@ -1,7 +1,6 @@
 package masterSpringMVC.config;
 
 import java.time.LocalDate;
-
 import org.springframework.boot.context.embedded.EmbeddedServletContainerCustomizer;
 import org.springframework.boot.web.servlet.ErrorPage;
 import org.springframework.context.annotation.Bean;
@@ -17,7 +16,6 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter
 import org.springframework.web.servlet.i18n.LocaleChangeInterceptor;
 import org.springframework.web.servlet.i18n.SessionLocaleResolver;
 import org.springframework.web.util.UrlPathHelper;
-
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 
@@ -45,15 +43,12 @@ public class WebConfiguration extends WebMvcConfigurerAdapter {
 		localeChangeInterceptor.setParamName("lang");
 		return localeChangeInterceptor;
 	}
-	
+
 	@Bean
-    public Docket userApi() {
-        // the api documentation is available at http://localhost:8080/swagger-ui.html
-        return new Docket(DocumentationType.SWAGGER_2)
-                .select()
-                .paths(path -> path.startsWith("/api/"))
-                .build();
-    }
+	public Docket userApi() {
+		// the api documentation is available at http://localhost:8080/swagger-ui.html
+		return new Docket(DocumentationType.SWAGGER_2).select().paths(path -> path.startsWith("/api/")).build();
+	}
 
 	@Bean
 	@Primary
@@ -72,6 +67,7 @@ public class WebConfiguration extends WebMvcConfigurerAdapter {
 	public EmbeddedServletContainerCustomizer containerCustomizer() {
 		return container -> container.addErrorPages(new ErrorPage(MultipartException.class, "/uploadError"));
 	}
+
 
 	@Override
 	public void configurePathMatch(PathMatchConfigurer configurer) {

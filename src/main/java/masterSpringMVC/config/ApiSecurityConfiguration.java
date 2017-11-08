@@ -13,8 +13,10 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 public class ApiSecurityConfiguration extends WebSecurityConfigurerAdapter {
 	@Autowired
 	public void configureAuth(AuthenticationManagerBuilder auth) throws Exception {
-		auth.inMemoryAuthentication().withUser("user").password("user").roles("USER").and().withUser("admin")
-				.password("admin").roles("USER", "ADMIN");
+		auth.inMemoryAuthentication()
+				.withUser("user").password("user").roles("USER")
+				.and()
+				.withUser("admin").password("admin").roles("USER", "ADMIN");
 	}
 
 	@Override
